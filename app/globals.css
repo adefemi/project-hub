@@ -2,26 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #F8F8F8;
+}
+
+main{
+  overflow: hidden;
+}
+
+.hero{
+  background-image: url("/hero.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.caller{
+  background: linear-gradient(180deg, #B05DF4 0%, transparent 100%);
+  border-radius: 50%;
+}
+
+.bottom{
+  background-image: url("/bottom.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.dividerMain{
+  border-bottom: 1px solid #DCD4E9;
+  width: 100%;
+}
+
+.buttonEnter{
+  background: linear-gradient(45deg, #4A3A69, #171421);
 }
