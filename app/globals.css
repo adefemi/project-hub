@@ -23,6 +23,10 @@ main{
   border-radius: 50%;
 }
 
+.m-header{
+  background: linear-gradient(45deg, #4A3A69, #171421);
+}
+
 .bottom{
   background-image: url("/bottom.svg");
   background-size: cover;

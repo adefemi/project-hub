@@ -4,6 +4,8 @@ import Link from "next/link";
 import Card from "./common/card";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import Header from "./common/header";
+import Footer from "./common/footer";
 
 const variants = {
   initial: { scale: 1.15, y: "-200%", opacity: 0 },
@@ -44,18 +46,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen w-full">
       <div className="w-full hero">
-        <div className="h-16 md:h-24 px-4 md:px-8 w-ful border-b border-b-tertiary">
-          <div className="flex h-full flex-row items-center justify-between max-w-screen-xl m-auto">
-            <div className="text-white text-base lg:text-lg font-bold">
-              Great<span className="text-primary">.Projects</span>
-            </div>
-            <nav>
-              <Link href="/projects" className="text-sm text-heading">
-                Projects
-              </Link>
-            </nav>
-          </div>
-        </div>
+        <Header />
         <div className="grid md:grid-cols-1 lg:grid-cols-2 px-4 md:px-12 max-w-screen-xl m-auto">
           <div>
             <h1 className="text-white mt-16 md:mt-28 lg:mt-32 text-3xl md:text-6xl font-bold">
@@ -176,29 +167,10 @@ export default function Home() {
             </Link>
           </motion.div>
         </div>
-        <motion.div
-          initial={{ y: "6000%", opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="dividerMain mt-16"
-        />
+        
       </div>
 
-      <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeInOut", delay: 0.3 }}
-        className="py-6 md:py-12 text-sm md:text-base"
-      >
-        &copy; Copyright 2023 -{" "}
-        <a
-          href="https://www.youtube.com/adefemigreat"
-          className="text-primary"
-          target="__blank"
-        >
-          Adefemigreat
-        </a>
-      </motion.div>
+      <Footer />
     </main>
   );
 }
