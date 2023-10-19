@@ -1,12 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Header from "../common/header";
 import Footer from "../common/footer";
 import { motion } from "framer-motion";
 import NotData from "../common/notData";
+import Modal from "../common/submitProject";
 
 const Projects = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
   return (
     <main className="min-h-screen w-full">
       <div className="w-full m-header">
@@ -63,7 +73,10 @@ const Projects = () => {
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeInOut", delay: 0.3 }}
         >
-          <button className="text-sm text-tertiary font-medium bg-white border px-16 py-4 border-tertiary rounded-full">
+          <button
+            onClick={handleOpen}
+            className="text-sm text-tertiary font-medium bg-white border px-16 py-4 border-tertiary rounded-full"
+          >
             Submit
           </button>
           <div className="text-base text-tertiary mt-4 md:mt-0 md:ml-12">
@@ -85,6 +98,7 @@ const Projects = () => {
       </div>
 
       <Footer />
+      {isModalOpen && <Modal id="1" isOpen={isModalOpen} onClose={handleClose} />}
     </main>
   );
 };
