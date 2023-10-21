@@ -1,21 +1,56 @@
 import { AnimatePresence, motion } from "framer-motion";
 import CloseIcon from "./closeIcon";
-import { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
+import { InputHTMLAttributes, TextareaHTMLAttributes, useState } from "react";
+import { domain } from "../network";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 // Define your modal component
 const SubmitProject = ({
   isOpen,
   onClose,
   id,
+  getActiveProject
 }: {
   isOpen: boolean;
   id: string;
   onClose: () => void;
+  getActiveProject: () => void;
 }) => {
   // Define your animation variants
   const variants = {
     open: { opacity: 1 },
     closed: { opacity: 0 },
+  };
+
+  const [data, setData] = useState<any>({});
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const onChange = (e: any) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    const res = await axios
+      .post(`${domain}submission-url/`, {
+        ...data,
+        project_id: id,
+      })
+      .catch((err) => {
+        toast(err.response.data.message, {type: "error"});
+      });
+
+    if (res) {
+      toast("Submission successful", {type: "success"});
+      getActiveProject()
+      onClose();
+    }
+    setLoading(false);
   };
 
   return (
@@ -51,18 +86,40 @@ const SubmitProject = ({
               Project Submission
             </motion.h1>
             <div className="mt-2 md:mt-6" />
-            <InputField label="Full Name" />
-            <InputField label="Email Address" />
-            <InputField label="Testing Link" />
-            <TextAreaField
-              label="Repositories"
-              placeholder="Specify your repos with their name, what they do and link"
-            />
-            <motion.div className="flex justify-center w-full">
-              <button className="bg-tertiary mt-2 text-sm md:text-base text-white py-3 md:py-4 px-8 md:px-10 rounded-full buttonEnter">
-                Submit
-              </button>
-            </motion.div>
+            <form onSubmit={onSubmit}>
+              <InputField
+                label="Full Name"
+                onChange={onChange}
+                name="fullname"
+                required
+              />
+              <InputField
+                label="Email Address"
+                onChange={onChange}
+                name="email"
+                type="email"
+                required
+              />
+              <InputField
+                label="Testing Link"
+                onChange={onChange}
+                name="testinglink"
+                placeholder="starts with https:// or http://"
+                required
+              />
+              <TextAreaField
+                label="Repositories"
+                name="repositories"
+                onChange={onChange}
+                placeholder="Repo Link - Function"
+                required
+              />
+              <motion.div className="flex justify-center w-full">
+                <button className="bg-tertiary mt-2 text-sm md:text-base text-white py-3 md:py-4 px-8 md:px-10 rounded-full buttonEnter">
+                  {loading ? <LoadingIcon /> : "Submit"}
+                </button>
+              </motion.div>
+            </form>
           </motion.div>
         </motion.div>
       )}
@@ -110,7 +167,7 @@ function TextAreaField({ label, ...rest }: TextAreaFieldProps) {
 
 const LoadingIcon = () => {
   const spinnerVariants = {
-    initial: {rotate: 0},
+    initial: { rotate: 0 },
     spin: {
       rotate: 360,
       transition: {

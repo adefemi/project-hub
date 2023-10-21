@@ -13,7 +13,13 @@ export interface ProjectProps {
   submission_count: number;
 }
 
-const ProjectCard = ({ proj }: { proj: ProjectProps }) => {
+const ProjectCard = ({
+  proj,
+  getActiveProject,
+}: {
+  proj: ProjectProps;
+  getActiveProject: () => void;
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpen = () => {
@@ -64,7 +70,12 @@ const ProjectCard = ({ proj }: { proj: ProjectProps }) => {
   return (
     <div>
       {isModalOpen && (
-        <Modal id="1" isOpen={isModalOpen} onClose={handleClose} />
+        <Modal
+          id="1"
+          isOpen={isModalOpen}
+          onClose={handleClose}
+          getActiveProject={getActiveProject}
+        />
       )}
       <Infos title="Title" description={proj.title} />
 

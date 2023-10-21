@@ -8,14 +8,13 @@ import NotData from "../common/notData";
 import ProjectCard, { ProjectProps } from "../common/projectCard";
 import axios from "axios";
 import SkeletonLoader from "../common/skeletonLoader";
+import { domain } from "../network";
 
 const Projects = () => {
   const [projects, setProjects] = useState<[ProjectProps] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const getActiveProjects = async () => {
-    const projects = await axios.get(
-      "https://api-gp.devtot.com/main-path/get-project-url/?isactive=True"
-    );
+    const projects = await axios.get(`${domain}get-project-url/?isactive=True`);
     setLoading(false);
     setProjects(projects.data as [ProjectProps]);
   };
@@ -45,7 +44,10 @@ const Projects = () => {
         ) : !projects ? (
           <NotData />
         ) : (
-          <ProjectCard proj={projects[0]} />
+          <ProjectCard
+            proj={projects[0]}
+            getActiveProject={getActiveProjects}
+          />
         )}
 
         <div className="mt-12 md:mt-24" />

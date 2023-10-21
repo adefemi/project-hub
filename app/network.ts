@@ -1,0 +1,1 @@
+export const domain = "https://api-gp.devtot.com/main-path/"
