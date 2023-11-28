@@ -9,18 +9,28 @@ import ProjectCard, { ProjectProps } from "../common/projectCard";
 import axios from "axios";
 import SkeletonLoader from "../common/skeletonLoader";
 import { domain } from "../network";
+import CompletedProjectCard from "../common/CompletedProjectCard";
 
 const Projects = () => {
   const [projects, setProjects] = useState<[ProjectProps] | null>(null);
+  const [completedProjects, setCompletedProjects] = useState<
+    [ProjectProps] | null
+  >(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const getActiveProjects = async () => {
-    const projects = await axios.get(`${domain}get-project-url/?isactive=True`);
+  const getActiveProjects = async (
+    setter: (data: [ProjectProps]) => void,
+    status = "True"
+  ) => {
+    const projects = await axios.get(
+      `${domain}get-project-url/?isactive=${status}`
+    );
     setLoading(false);
-    setProjects(projects.data as [ProjectProps]);
+    setter(projects.data as [ProjectProps]);
   };
 
   useEffect(() => {
-    getActiveProjects();
+    getActiveProjects(setProjects);
+    getActiveProjects(setCompletedProjects, "False");
   }, []);
 
   return (
@@ -41,12 +51,12 @@ const Projects = () => {
 
         {loading ? (
           <SkeletonLoader h="200px" />
-        ) : !projects ? (
+        ) : !projects || !projects[0] ? (
           <NotData />
         ) : (
           <ProjectCard
             proj={projects[0]}
-            getActiveProject={getActiveProjects}
+            getActiveProject={() => getActiveProjects(setProjects)}
           />
         )}
 
@@ -60,7 +70,17 @@ const Projects = () => {
           Completed Projects
         </motion.h1>
         <div className="mt-8 md:mt-12" />
-        <NotData />
+        {loading ? (
+          <SkeletonLoader h="200px" />
+        ) : !completedProjects || !completedProjects[0] ? (
+          <NotData />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {completedProjects.map((proj, i) => (
+              <CompletedProjectCard proj={proj} key={i} />
+            ))}
+          </div>
+        )}
       </div>
 
       <Footer />
